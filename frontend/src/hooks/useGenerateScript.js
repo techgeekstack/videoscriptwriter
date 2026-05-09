@@ -1,6 +1,15 @@
 import { useCallback, useState } from "react";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const PROD_BACKEND_URL = "https://videoscriptwriter.vercel.app";
+const DEV_BACKEND_URL = "http://localhost:5000";
+
+function resolveApiUrl() {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl && envUrl.trim()) return envUrl.trim().replace(/\/$/, "");
+  return import.meta.env.PROD ? PROD_BACKEND_URL : DEV_BACKEND_URL;
+}
+
+const API_URL = resolveApiUrl();
 
 export function useGenerateScript() {
   const [data, setData] = useState(null);
